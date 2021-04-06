@@ -14,14 +14,20 @@ class User(Base):
 
   @validates('email')
   def validates_email(self, key, email):
-      # make sure email address contains @ character
-      assert '@' in email
+    # make sure email address contains @ character
+    assert '@' in email
 
-      return email
+    return email
 
   @validates('password')
   def validate_password(self, key, password):
-      assert len(password) > 4
+    assert len(password) > 4
 
-      # encrpy password
-      return bcrypt.hashpw(password.encode('utf-8'), salt)
+    # encrpy password
+    return bcrypt.hashpw(password.encode('utf-8'), salt)
+
+  def verify_password(self, password):
+    return bcrypt.checkpw(
+      password.encode('utf-8'),
+      self.password.encode('utf-8')
+    ) 
