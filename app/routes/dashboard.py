@@ -20,7 +20,16 @@ def dash():
     loggedIn=session.get('loggedIn')
   )
 
-@bp.route('edit/<id>')
+@bp.route('/edit/<id>')
 def edit(id):
-    return render_template('edit-post.html')
+  # get single post by id
+  db = get_db()
+  post = db.query(Post).filter(Post.id == id).one()
+
+  # render edit page
+  return render_template(
+    'edit-post.html',
+    post=post,
+    loggedIn=session.get('loggedIn')
+  )
 
